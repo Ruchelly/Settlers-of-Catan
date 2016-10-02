@@ -26,13 +26,20 @@ public class HexTile {
 		setIntersections(new Intersection[6]);
 		setBorders(new Border[6]);
 		setCoast(false);
-		setBandit(false);
+		setRobber(false);
 		setCenter(false);
 	}
 
 	// Same as above, but with predetermined corners
 	HexTile(Intersection[] corners) {
-		this.setIntersections(corners);
+		setResourceYield();
+		setNumRoll();
+		setBorders(new Border[6]);
+		setCoast(false);
+		setRobber(false);
+		setCenter(false);
+		
+		setIntersections(corners);
 	}
 
 	/* ~~~~~~~~~~~~~~~~~~~~~~~Methods~~~~~~~~~~~~~~~~~~~ */
@@ -43,12 +50,12 @@ public class HexTile {
 
 	// randomly assigns index value of resources array as resourceYield
 	public void setResourceYield() {
-		int rand = getRandInt(0, 5);
+		int rand = getRandInt(0, 4);
 		this.resourceYield = rand;
 	}
 
 	public int getNumRoll() {
-		return this.numRoll;
+		return numRoll;
 	}
 
 	// numRoll must be between 2 and 12 (double dice roll), but not 7 (robber)
@@ -58,7 +65,7 @@ public class HexTile {
 		while (randInt == 7) {
 			randInt = getRandInt(2, 12);
 		}
-
+		numRoll = randInt;
 	}
 
 	public boolean isCoast() {
@@ -75,7 +82,7 @@ public class HexTile {
 	}
 
 	// called when robber is moved on (true) or off (false)
-	public void setBandit(boolean robber) {
+	public void setRobber(boolean robber) {
 		this.robber = robber;
 	}
 
@@ -88,8 +95,8 @@ public class HexTile {
 	}
 
 	public void yieldResources() {
-		// Tiles with robber do not yield resources
-		if (!this.hasRobber()) {
+		// Tiles with robber and center tile do not yield resources
+		if (!this.hasRobber() && !this.isCenter()) {
 			// For each intersection in array of intersections, give the occupying player(s) (if any) resources
 			for (Intersection intersection : getIntersections()) {
 				if (intersection.isOccupied()) {
@@ -97,7 +104,7 @@ public class HexTile {
 					// It then uses the number of that player to get the player object itself
 					// It then opens the resources array of that player and adds "type" to it
 					// (One for settlement, two for city)
-					Players.players[intersection.getPlayer()].getResources()[resourceYield] += intersection.getType();
+					GameManager.getPlayers()[intersection.getPlayer()].getResources()[resourceYield] += intersection.getType();
 				}
 			}
 		}

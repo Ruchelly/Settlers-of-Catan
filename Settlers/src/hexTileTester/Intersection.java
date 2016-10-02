@@ -10,8 +10,8 @@ public class Intersection {
 	private int test;		// Specifically for testing static arrays between GameManager and HexTile
 	
 	Intersection(){
-		setType(1);
-		setOccupied(false);
+		type = 1;
+		occupied = true;
 	}
 	
 	Intersection(int type, boolean occupied){

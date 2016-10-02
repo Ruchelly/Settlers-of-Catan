@@ -3,9 +3,15 @@ package hexTileTester;
 // Skeleton for testing
 
 public class Players {
-	public class Player{
 		// array of integers holds value of each resource
-		private int resources[] = new int[5];
+		private int resources[];
+		
+		Players(){
+			resources = new int[5];
+			for (int r:resources){
+				r = 0;
+			}
+		}
 		
 		public int[] getResources() {
 			return resources;
@@ -14,8 +20,4 @@ public class Players {
 		public void setResources(int resources[]) {
 			this.resources = resources;
 		}
-	}
-	
-	// "array" of one player for testing
-	public static Player players[] = new Player[1];
 }
